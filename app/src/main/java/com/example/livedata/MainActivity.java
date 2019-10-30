@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends AppCompatActivity {
 
-    private NameViewModel model;
+    private UserViewModel model;
     private TextView nameTextView;
     private Button someButton;
 
@@ -24,25 +24,25 @@ public class MainActivity extends AppCompatActivity {
         someButton = findViewById(R.id.button);
 
         // Get the ViewModel.
-        model = ViewModelProviders.of(this).get(NameViewModel.class);
+        model = ViewModelProviders.of(this).get(UserViewModel.class);
 
         // Create the observer which updates the UI.
-        final Observer<String> nameObserver = new Observer<String>() {
+        final Observer<User> nameObserver = new Observer<User>() {
             @Override
-            public void onChanged(@Nullable final String newName) {
+            public void onChanged(@Nullable final User user) {
                 // Update the UI, in this case, a TextView.
-                nameTextView.setText(newName);
+                nameTextView.setText(user.getName());
             }
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        model.getCurrentName().observe(this, nameObserver);
+        model.getUser().observe(this, nameObserver);
 
         someButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String anotherName = "John Doe";
-                model.getCurrentName().setValue(anotherName);
+                model.setName(anotherName);
             }
         });
     }
